@@ -14,3 +14,21 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `AaronAbuUsama/agentic-whatsapp`, via the `gh` CLI.
+See [docs/agents/issue-tracker.md](./docs/agents/issue-tracker.md).
+
+### Triage labels
+
+The five canonical roles, unchanged: `needs-triage`, `needs-info`,
+`ready-for-agent`, `ready-for-human`, `wontfix`.
+See [docs/agents/triage-labels.md](./docs/agents/triage-labels.md).
+
+### Domain docs
+
+Single-context — root [CONTEXT.md](./CONTEXT.md) plus [docs/adr/](./docs/adr/).
+See [docs/agents/domain.md](./docs/agents/domain.md).

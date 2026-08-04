@@ -11,12 +11,19 @@ Vocabulary is `CONTEXT.md`. Decisions are `docs/adr/`.
 Each workspace exists to answer exactly one question. If a surface does not
 answer its workspace's question, it belongs in a different workspace.
 
-| Workspace       | The question you opened it to answer                       | Default |
-| --------------- | ---------------------------------------------------------- | ------- |
-| Mission Control | What is it trying to do, and is it on track?               | ✅      |
-| Rooms           | What is actually being said — and let me take it from here |         |
-| Agents          | What can it do, and what is it allowed to do?              |         |
-| Wiki            | What does it currently know?                               |         |
+| Workspace       | The question you opened it to answer                       | Status       |
+| --------------- | ---------------------------------------------------------- | ------------ |
+| Mission Control | What is it trying to do, and is it on track?               | ✅ default   |
+| Agents          | What can it do, and what is it allowed to do?              | ✅           |
+| Rooms           | What is actually being said — and let me take it from here | out of scope |
+| Wiki            | What does it currently know?                               | out of scope |
+
+**Rooms and Wiki are not being built**
+([ADR-0017](./adr/0017-the-workbench-covers-only-what-nothing-else-does.md)).
+WhatsApp is already a WhatsApp client, and Obsidian already opens markdown with
+wiki links, better than a terminal will. The workbench covers only what nothing
+else can show: Missions and Agents. Their layouts stay below as design that was
+done, not as work that is planned.
 
 ### Mission Control
 
@@ -192,6 +199,117 @@ notification feed it stops being a queue you can finish.
 The Plan is a Document and opens full-screen; the panel is a window onto it, not
 a summary of it. Assertions show met, unmet, or **disputed** — `A-CALL-001` above
 is disputed, which no checkbox could express.
+
+### A Mission
+
+The working screen, and the one people will stare at. Its shape is taken from
+Factory's Mission Control, which has survived thirty-hour runs: one thing in
+detail on the left, the whole list on the right, live work along the bottom.
+
+```
+┌ sourcing-south-america ─── milestone 2 of 4 · 14/22 · £28.10 · 6d ─┐
+│ ●●●●●●●●●●●●●●○○○○○○○○     assertions 12/18 met · 1 disputed       │
+└────────────────────────────────────────────────────────────────────┘
+┌ Ticket · check-export ───────────┐┌ Tickets ─────────────── 14/22 ─┐
+│ skill     lead-qualifier         ││ ✓ sweep-directories            │
+│ milestone qualify                ││ ✓ dedupe-candidates            │
+│                                  ││ ● check-export           8m    │
+│ Preconditions                    ││ ○ source-every-claim           │
+│ · sweep-directories settled      ││ ○ validate-qualify             │
+│                                  ││ ── shortlist ───────────────── │
+│ Closes when                      ││ ○ rank-and-score      blocked  │
+│ · A-LEAD-002 — thirty carry an   ││ ○ validate-shortlist           │
+│   export claim, each sourced     ││                                │
+│   fails if a counted org names   ││                                │
+│   no exporter and claims none    ││                                │
+│                         12/30 ◐  ││                                │
+└──────────────────────────────────┘└────────────────────────────────┘
+┌ Delegate #18 · check-export ─────────────────── 8m 36s · £1.40 ────┐
+│ search  "cooperativa cafetera huila exportador"        14 results  │
+│ fetch   fedecafe.com/directorio/huila                  ok          │
+│ record  Coop. Huila Norte — exports via Racafe         sourced     │
+│ search  "asoproagro peru exportacion cafe"                         │
+└────────────────────────────────────────────────────────────────────┘
+  t tickets   a assertions   l log   p plan   ↵ open   esc back
+```
+
+Decisions rather than decoration:
+
+- **A Ticket shows the Assertion it closes, in full, including its failure
+  condition.** Not an id, not a title. Whoever is looking at a Ticket is asking
+  "is this done", and the failure condition is the part that answers it.
+- **Milestones are separators in the Ticket list**, not a level of navigation.
+  They group; they are not somewhere you go.
+- The Delegate pane is a **Stream** — what it is doing, now, in its own verbs.
+  Not its reasoning, which is its own business under ADR-0003.
+- The header carries **Spend and elapsed** beside progress, because a Mission runs
+  for days at many times the cost of a session.
+
+### Planning a Mission
+
+The screen that had no design, and the one where ADR-0008 is enforced. Assertions
+are drafted first, in conversation; decomposition comes after; and the Mission
+cannot start while any Assertion is unclaimed.
+
+```
+┌ Planning · sourcing-south-america ────────── draft · not running ──┐
+│ ⚠ cannot start — 2 assertions unclaimed                            │
+└────────────────────────────────────────────────────────────────────┘
+┌ Conversation ────────────────────┐┌ Assertions ────────── 6 drafted ┐
+│ You  forty leads, and I want to  ││ ✓ A-LEAD-001 forty organisations│
+│      call ten of them without    ││    ← sweep-directories          │
+│      opening anything else       ││ ✓ A-LEAD-002 thirty export      │
+│ ⟡    Then "callable" needs a     ││    ← check-export               │
+│      definition. Is a phone      ││ ✓ A-LEAD-004 named contact each │
+│      number enough, or does it   ││    ← check-export               │
+│      need a named contact?       ││ ! A-CALL-001 three calls booked │
+│ You  named contact               ││    unclaimed                    │
+│ ⟡    Recorded as A-LEAD-004.     ││ ! A-CALL-002 shortlist agreed   │
+│      Two assertions still have   ││    unclaimed                    │
+│      no ticket.                  ││                                 │
+└──────────────────────────────────┘└─────────────────────────────────┘
+┌ Plan ──────────────────────────────────────────────────────────────┐
+│ research    3 tickets   validated by validate-research             │
+│ qualify     4 tickets   validated by validate-qualify              │
+│ shortlist   0 tickets   ⚠ nothing claims A-CALL-001, A-CALL-002    │
+└────────────────────────────────────────────────────────────────────┘
+  ↵ decompose   a assertions   r review   ⏎ start — blocked
+```
+
+Decisions rather than decoration:
+
+- **The gate is the screen.** A banner states why it cannot start and the Plan pane
+  names which Assertions are unclaimed. Starting is visibly unavailable rather than
+  absent, so the reason is never a mystery.
+- **Assertions show their claiming Ticket inline** (`← check-export`). Coverage is
+  a property you can read down the list rather than a check you have to run.
+- Planning is a **conversation**, because an Assertion is a negotiation about what
+  counts as done — "callable" meaning a named contact rather than a phone number is
+  the kind of thing only the exchange surfaces.
+- Nothing here is a wizard. A plan is edited and re-edited until the gate passes.
+
+### A Ticket that fanned out
+
+```
+┌ Ticket · qualify-forty-leads ──────── 12/40 · 3 disputed · qualify ┐
+│ Closes when  A-LEAD-002 — thirty carry an export claim, sourced    │
+│              fails if a counted org names no exporter and claims   │
+│              none of its own                                       │
+└────────────────────────────────────────────────────────────────────┘
+┌ Briefs ────────────────────────────────────────── 40 · 12 settled ─┐
+│ ✓ Coop. Huila Norte     thread:lead-07   exports via Racafe        │
+│ ✓ Finca La Esperanza    thread:lead-11   no reply · dead           │
+│ ● Asoproagro            thread:lead-23   awaiting reply       3d   │
+│ ! Café Andino           thread:lead-31   said yes, then no  disputed│
+│ ○ 36 more                                                          │
+└────────────────────────────────────────────────────────────────────┘
+  ↵ open thread   e evidence   esc back
+```
+
+One Ticket, forty Briefs, forty Threads. This is where the collapsed row on the
+Mission screen expands, and it is the only place the fan-out is enumerated. Each
+Brief names the Thread it lives in, so a lead that stalled is one keystroke from
+the conversation that stalled it.
 
 ### Rooms
 

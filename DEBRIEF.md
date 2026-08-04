@@ -65,7 +65,7 @@ session where checking the filesystem is one command.
 
 ### 4. The prototype contradicted an accepted ADR, silently
 
-[ADR-0012](adr/0012-the-runtime-split.md), read in the first ten minutes of the
+[ADR-0012](docs/adr/0012-the-runtime-split.md), read in the first ten minutes of the
 session, says:
 
 > Mission workers are a separate question from Residents: they hold no

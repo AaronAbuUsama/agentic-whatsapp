@@ -1,0 +1,16 @@
+pre-commit:
+  commands:
+    staged:
+      # vp staged = oxfmt --write + oxlint --fix on staged files only
+      run: bunx vp staged
+
+pre-push:
+  parallel: true
+  commands:
+    check:
+      # oxfmt --check + oxlint + tsc across the workspace
+      run: bunx vp check
+    fallow:
+      # dead code / complexity / duplication on what this push adds,
+      # scoped to the merge-base against origin/HEAD
+      run: bunx fallow audit

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Agentic TUI"
+  short_description: "Build a human-and-agent terminal workbench"
+  default_prompt: "Use $build-agentic-tui to build a useful Agentic TUI Kit application from scratch and prove the first vertical slice."

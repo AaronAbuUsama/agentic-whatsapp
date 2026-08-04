@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test Agentic TUI"
+  short_description: "Close the loop with visual TUI proof"
+  default_prompt: "Use $test-agentic-tui to drive the real TUI, inspect it, and produce reviewable screenshots and video."

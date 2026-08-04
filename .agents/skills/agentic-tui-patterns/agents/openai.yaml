@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic TUI Patterns"
+  short_description: "Review workbench and agent-parity patterns"
+  default_prompt: "Use $agentic-tui-patterns to review this workbench's modules, actions, panels, components, and agent parity."

@@ -1,0 +1,43 @@
+{
+  "name": "agentic-whatsapp",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "tools/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "ready": "vp check && vp run -r test && vp run -r build",
+    "dev": "vp run website#dev",
+    "lint": "vp lint",
+    "format": "vp fmt --write",
+    "check": "vp check",
+    "audit": "fallow audit",
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "fallow": "^3.13.0",
+    "lefthook": "^2.1.10",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "overrides": {
+    "vite": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "bun",
+      "version": "1.3.14",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "catalog": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.6",
+    "vite-plus": "0.2.6"
+  }
+}

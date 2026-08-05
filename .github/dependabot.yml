@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # GitHub Actions used by CI
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 5
+
+  # npm / package.json dependencies (workspace root)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+    open-pull-requests-limit: 5
+    # Wait for releases to settle before opening bump PRs.
+    cooldown:
+      default-days: 7

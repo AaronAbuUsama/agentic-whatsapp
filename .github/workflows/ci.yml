@@ -17,5 +17,7 @@ jobs:
           bun-version: 1.3.14
       - run: bun install --frozen-lockfile
       - run: bunx vp check
+      - name: Tests with coverage
+        run: bunx vp test --run --coverage
       - name: fallow audit
         run: bunx fallow audit --format github-annotations

@@ -14,6 +14,21 @@ export default defineConfig({
   run: {
     cache: true,
   },
+  test: {
+    coverage: {
+      provider: "v8",
+      include: ["packages/**/src/**"],
+      // Barrel re-exports and test files carry no logic to cover.
+      exclude: ["**/*.test.ts", "**/index.ts"],
+      reporter: ["text"],
+      thresholds: {
+        statements: 90,
+        branches: 80,
+        functions: 90,
+        lines: 90,
+      },
+    },
+  },
   staged: {
     "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,json,jsonc,css,md,html}": "vp fmt --write",
     "*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}": "vp lint --fix",
